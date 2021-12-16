@@ -89,12 +89,11 @@ class ChartV2 {
     // Prepares data for usage in Chart.js
     public function prep_data()
     {
-        $type = strtolower($this->type);
         return array(
             'id' => $this->id,
             'title' => $this->title,
             'subtitle' => $this->subtitle,
-            'type' => $type,
+            'type' => strtolower($this->type),
             'stacked' => $this->stacked,
             'labels' => $this->labels,
             'datasets' => $this->datasets,
