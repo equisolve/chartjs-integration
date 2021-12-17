@@ -55,6 +55,7 @@ class ChartV2 {
             if ($dataset->type()) {
                 $ds['type'] = strtolower(h($dataset->type()[0]->value()));
             }
+            $ds['show_dataset_labels'] = $dataset->show_dataset_labels();
             $datasets[] = $ds;
         }
         $this->datasets = $datasets;
