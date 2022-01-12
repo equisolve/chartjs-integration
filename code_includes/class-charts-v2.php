@@ -9,7 +9,8 @@ class ChartV2 {
     protected $labels;
     protected $type;
     protected $source;
-
+    protected $chart_subtable;
+        
     public function __construct($record)
     {
         $this->id = $record->id();
@@ -87,8 +88,9 @@ class ChartV2 {
         if ($record->legend_alignment()) {
             $this->legend_alignment = $record->legend_alignment()[0]->value();
         }
+        $this->chart_subtable = $record->chart_subtable();
     }
-
+    
     // Prepares data for usage in Chart.js
     public function prep_data()
     {
@@ -111,35 +113,40 @@ class ChartV2 {
             'legend_alignment' => strtolower($this->legend_alignment),
         );
     }
-
+    
     public function id()
     {
         return $this->id;
     }
-
+    
     public function tab_title()
     {
         return $this->tab_title;
     }
-
+    
     public function title()
     {
         return $this->title;
     }
-
+    
     public function subtitle()
     {
         return $this->subtitle;
     }
-
+    
     public function description()
     {
         return $this->description;
     }
-
+    
     public function debug()
     {
         return $this->debug;
+    }
+    
+    public function chart_subtable()
+    {
+        return $this->chart_subtable;
     }
 }
 ?>
