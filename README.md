@@ -1,8 +1,10 @@
 # ChartJS Integration
-Code for using ChartJS in Insite
+Code for using ChartJS in Insite.
+
+`row-charts-tabbed-v2.php` and `row-charts-v2.php` snippets are meant to be added in as Row Templates.
 
 ## Database Setup
-Please see the Confluence article on detailed setup information
+Please see the Confluence article on detailed setup information. This includes what Page Type Tables and their corresponding fields are needed.
 [Setup Information](https://equisolve.atlassian.net/wiki/spaces/FK/pages/432799745/ChartJS+Integration)
 
 ## ChartJS (v3.6.2)

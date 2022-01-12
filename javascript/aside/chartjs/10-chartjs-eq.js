@@ -53,7 +53,11 @@ function prep_config(cd) {
     }
     pcd.options.scales = {
         y: {},
-        x: {}
+        x: {
+            grid: {
+                display: false,
+            }
+        }
     };
     
     // Data Labels Plugin
@@ -71,7 +75,11 @@ function prep_config(cd) {
     // Add units to the specified axes
     if ((cd.type == 'line' || cd.type == 'bar') && (cd.y1_prefix || cd.y1_suffix)) {
         pcd.options.scales.y.ticks = {
-            callback : (value, index, values) => { return cd.y1_prefix + value + cd.y1_suffix; }
+            callback : (value, index, values) => {
+                // Add commas to big numbers
+                let num = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                return cd.y1_prefix + num + cd.y1_suffix;
+            }
         };
     }
     
@@ -110,29 +118,42 @@ function prep_config(cd) {
             }
         }
     }
-    
-    console.log(pcd);
     return pcd;
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
+    let chart_groups = [];
+    document.querySelectorAll('.module-charts-v2').forEach((chart_group) => {
+        let data = JSON.parse(document.getElementById("charts-data-" + chart_group.dataset.row).innerText);
+        chart_groups.push(data);
+    });
+    document.querySelectorAll('.sub-tabs').forEach((chart_group) => {
+        let data = JSON.parse(document.getElementById("charts-data-subtable-" + chart_group.dataset.row).innerText);
+        chart_groups.push(data);
+    });
+    // Register plugin
     Chart.register(ChartDataLabels);
-    let charts_data = JSON.parse(document.getElementById("charts-data").innerText);
-    console.log(charts_data);
-    charts_data.all_data.forEach((cd) => {
-        let el = document.getElementById('chart-' + cd.id);
-        let sheet_el = document.getElementById('chart-spreadsheet-' + cd.id);
-        if (el) {
-            new Chart(el, prep_config(cd));
-        }
-        if (sheet_el) {
-            let sheet = jspreadsheet(sheet_el, {
-                data: cd.sheet_data,
-                columns: [{}],
-                config: {
-                    columnResize: true
+    
+    chart_groups.forEach((charts_data) => {
+        charts_data.all_data.forEach((cd) => {
+            let el = document.getElementById('chart-' + cd.id);
+            let sheet_el = document.getElementById('chart-spreadsheet-' + cd.id);
+            if (el) {
+                if (cd.type) {
+                    new Chart(el, prep_config(cd));
+                } else {
+                    console.error('Chart ID: ' + cd.id + ' does not have a chart type selected');
                 }
-            });
-        }
+            }
+            if (sheet_el) {
+                let sheet = jspreadsheet(sheet_el, {
+                    data: cd.sheet_data,
+                    columns: [{}],
+                    config: {
+                        columnResize: true
+                    }
+                });
+            }
+        });
     });
 });
