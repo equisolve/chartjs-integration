@@ -81,3 +81,4 @@ UtilSystem::start_javascript();
 <script id="charts-data-subtable-<?= $id; ?>" type="application/json">
     <?= json_encode(array('all_data' => $charts_data)); ?>
 </script>
+<?php UtilSystem::end_javascript(); ?>
